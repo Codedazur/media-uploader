@@ -1,0 +1,11 @@
+{
+    "name": "media-uploader",
+    "version": "1.0.0",
+    "main": "media-uploader.min.js",
+    "ignore": [
+
+    ],
+    "dependencies": {
+        "jquery": "~1.11.1"
+    }
+}
