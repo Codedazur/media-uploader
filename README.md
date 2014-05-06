@@ -37,7 +37,7 @@ _Upload of a file in the queue started._
 _Upload of a file in the queue is done. NOTE: The server response is passed with this event._
 
 `media-uploader:file-error`
-_Upload of a file in the queue is errored. NOTE: The server response is passed with this event._
+_Upload of a file in the queue errored. NOTE: The server response is passed with this event._
 
 
 
