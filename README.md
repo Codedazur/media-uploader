@@ -11,6 +11,8 @@ The media-uploader will upload a media queue to any given url. The preferred met
 - Upload one or multiple files to a URL.
 - Use XHRRequest if available, iframe fallback.
 - Expects a JSON response from the server. If you do not plan on using JSON take a look at the skipParse option.
+- IE9 and below requires the response header to be text/html. If the header is application/json the browser will offer the user to download the response.
+- IE9 and below does not support the response to have a error header (e.g. 405).
 
 ###Dependencies
 
@@ -79,7 +81,7 @@ _If you add items by using DOM elements the MediaUploader will skip the plucking
 
 __Parameters:__
 
-- __items__: {string|input|array} A string or input element or array of strings or input elements.
+- __items__: {string|input|File|array} A string, input or File element. A array of the previous mentioned items is also supported.
 
 
 
@@ -94,3 +96,8 @@ uploader.upload();
 ####Events
 
 Listen to events using jQueries on, one and off methods.
+You can use your instance of the media-uploader to expose the events.
+```
+uploader.Event.START;
+```
+
