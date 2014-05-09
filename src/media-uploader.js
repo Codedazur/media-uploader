@@ -401,6 +401,16 @@
 
 
             /**
+             * Reference to the Queue
+             * @returns {Array} The queue
+             */
+
+            queue: function () {
+                return _queue;
+            },
+
+
+            /**
              * Add a item to the media uploader
              *
              * @param items {array|string|DOM element} The item(s) that need to be uploaded.
