@@ -21,11 +21,11 @@
 (function (root, factory) {
 
     if (typeof define === 'function' && define.amd) {
-        define(['jquery'], function (b) {
-            return (root.amdWebGlobal = factory(b));
+        define(['jquery'], function ($) {
+            return (root.amdWebGlobal = factory($));
         });
     } else {
-        root.amdWebGlobal = factory(root.b);
+        root.amdWebGlobal = factory(root.$);
     }
 
 } (this, function ($) {
@@ -44,6 +44,7 @@
             _uploadSupported = null,
             _skipParse = (skipParse !== undefined && skipParse !== null) ? skipParse : false,
             _eventDispatcher = $('<div></div>'),
+            _defaultFileFormName = 'file',
             _event = {
                 START: 'media-uploader:start',
                 PROGRESS: 'media-uploader:progress',
@@ -76,23 +77,31 @@
         /**
          * Add a item to the queue
          *
-         * @param item {string|dom element} The querySelector or DOM element
+         * @param item {string|dom element|blob} The querySelector or DOM element
          */
         addToQueue = function (input) {
-            if (typeof input === 'string') {
-                input = $(input).length > 0 ? $(input)[0] : undefined;
-            } else if (input instanceof jQuery) {
-                input = input[0];
-            } else if (!isDOMElement(input)) {
-                throw new Error('Unexpected type passed. Media-uploader supports, querySelector string or input element.')
-            }
-
             var object = {
-                response: undefined,
-                fileName: input.value,
-                input: input,
-                name: input.name
+                response: undefined
             };
+
+
+            if (window.File && input instanceof File) {
+                object.file = input;
+                object.fileName = input.name;
+                object.name = 'File';
+            } else {
+                if (typeof input === 'string') {
+                    input = $(input).length > 0 ? $(input)[0] : undefined;
+                } else if (input instanceof jQuery) {
+                    input = input[0];
+                } else if (!isDOMElement(input)) {
+                    throw new Error('Unexpected type passed. Media-uploader supports, querySelector string or input element.')
+                }
+
+                object.fileName = input.value;
+                object.input = input;
+                object.name = input.name;
+            }
 
             _queue.push(object);
         }
@@ -126,6 +135,9 @@
                 if (xhrSupported()) {
                     uploadXhr(_queue[_currentIndex]);
                 } else {
+                    if (_queue[_currentIndex].file) {
+                        throw new Error('File detected and XHR is not supported!');
+                    }
                     uploadIframe(_queue[_currentIndex]);
                 }
             } else {
@@ -141,13 +153,14 @@
          */
 
         uploadXhr = function (item) {
-            var file = item.input.files[0],
+            var file = item.file ? item.file : item.input.files[0],
                 xhr = new XMLHttpRequest(),
                 data = new FormData(),
                 response,
+                name = item.file ? _defaultFileFormName : item.input.name,
                 parseError = false;
 
-            data.append(item.input.name, file);
+            data.append(name, file);
 
             xhr.onload = function (event) {
                 response = event.target.response;
@@ -371,6 +384,21 @@
         return {
 
             Event: _event,
+
+            /**
+             * Get or Set the default form name for a File instance
+             * @param value {string}
+             * @returns {string}
+             */
+
+            defaultFileFormName: function (value) {
+                if (value) {
+                    _defaultFileFormName = value;
+                }
+
+                return _defaultFileFormName;
+            },
+
 
             /**
              * Add a item to the media uploader
