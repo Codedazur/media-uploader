@@ -69,7 +69,7 @@ _If you add items by using querySelector the MediaUploader will pluck the items 
 
 __Parameters:__
 
-- __items__: {string|input|array} A string or input element or array of strings or input elements.
+- __items__: {string|array} A string or array of strings.
 
 #####By Input element
 
@@ -81,7 +81,22 @@ _If you add items by using DOM elements the MediaUploader will skip the plucking
 
 __Parameters:__
 
-- __items__: {string|input|File|array} A string, input or File element. A array of the previous mentioned items is also supported.
+- __items__: {input|array} A input element or array of input elements.
+
+
+
+
+#####By File object
+
+```
+uploader.add([$('input[type=file]').files[0]]);
+```
+
+_If you add items by using File objects XHR must be supported, if not the library will throw an error._
+
+__Parameters:__
+
+- __items__: {File|array} A File element or array of File elements.
 
 
 
