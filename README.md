@@ -12,7 +12,7 @@ The media-uploader will upload a media queue to any given url. The preferred met
 - Use XHRRequest if available, iframe fallback.
 - Expects a JSON response from the server. If you do not plan on using JSON take a look at the skipParse option.
 
-###Dependecies
+###Dependencies
 
 - jQuery v1.11.1 minimum
 
@@ -37,7 +37,7 @@ _Upload of a file in the queue started._
 _Upload of a file in the queue is done. NOTE: The server response is passed with this event._
 
 `media-uploader:file-error`
-_Upload of a file in the queue is errored. NOTE: The server response is passed with this event._
+_Upload of a file in the queue errored. NOTE: The server response is passed with this event._
 
 
 
